@@ -51,4 +51,4 @@ const StrategySchema = new mongoose.Schema({
 StrategySchema.plugin(URLSlugs("title"));
 mongoose.model('User', UserSchema);
 mongoose.model('Strategy', StrategySchema);
-mongoose.connect('mongodb://localhost/hw06');
+mongoose.connect('mongodb://localhost/behindthoughts');
