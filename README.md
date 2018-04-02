@@ -2,7 +2,7 @@
 
 ## Overview
 
-For the writer in a long block. For the musician out of melodies. For anyone--creative or otherwise--stuck in a rut. Behind Thoughts is an online, crowd-sourced set of strategies to help get through mental blocks. Dedicated to the 'Oblique Strategies' card-deck by Brian Eno and Peter Schmidt.
+For the writer in a long block. For the musician out of melodies. For anyone--creative or otherwise--stuck in a rut. **Behind Thoughts** is an online, crowd-sourced set of strategies to help get through mental blocks. Dedicated to the 'Oblique Strategies' card-deck by Brian Eno and Peter Schmidt.
 
 Behind Thoughts allows users to view randomized or sorted strategies. Registered users can additionally submit and vote on strategies.
 
