@@ -36,29 +36,29 @@ Strategy:
 ```
 
 
-## [Link to Commented First Draft Schema](db.js)
+## [Link to Commented First Draft Schema](src/db.js)
 
 ## Wireframes
 
 index (/) - sortable list view of all strategies
 
-![index](../documentation/index.png)
+![index](documentation/index.png)
 
 strategy-detail (/strategy/:id) - page for showing large-view detail of one strategy
 
-![strategy-detail](../documentation/strategy-detail.png)
+![strategy-detail](documentation/strategy-detail.png)
 
 add-strategy (/add) - page for submitting a new strategy
 
-![add-strategy](../documentation/add-strategy.png)
+![add-strategy](documentation/add-strategy.png)
 
 login (/login) - page for logging in previous user
 
-![login](../documentation/login.png)
+![login](documentation/login.png)
 
 register (/register) - page for registering new user
 
-![register](../documentation/register.png)
+![register](documentation/register.png)
 
 ## Site map
 
@@ -95,7 +95,7 @@ Each strategy in list links to strategy-detail.
 
 11 points total out of 8 required points
 
-## [Link to Initial Main Project File](app.js) 
+## [Link to Initial Main Project File](src/app.js) 
 
 ## Annotations / References Used
 
