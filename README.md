@@ -62,8 +62,6 @@ register (/register) - page for registering new user
 
 ## Site map
 
-(___TODO__: draw out a site map that shows how pages are related to each other_)
-
 // Home: Index
 Header links to self, add-strategy, login, register
 Each strategy in list links to strategy-detail.
