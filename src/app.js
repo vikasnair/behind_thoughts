@@ -39,6 +39,10 @@ app.use((req, res, next) => {
 	next();
 });
 
+// routes
+
+
+
 // module.exports = app;
 
 app.set('port', process.env.PORT || 3000)
