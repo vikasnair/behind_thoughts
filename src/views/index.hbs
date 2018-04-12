@@ -1,2 +1,11 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+{{#if author}}
+<h2>{{author}}</h2>
+{{else}}
+<h2>All Strategies</h2>
+{{/if}}
+
+<ol>
+	{{#each strategies}}
+		<li><a href=strategy/{{this.slug}}>{{this.title}}</a></li>
+	{{/each}}
+</ol>

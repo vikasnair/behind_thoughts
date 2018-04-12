@@ -1,0 +1,11 @@
+{{#if strategy}}
+	<h2>{{strategy.title}}</h2>
+	{{#if strategy.url}}
+		URL: {{strategy.url}}
+		<br>
+	{{/if}}
+
+	{{#if author}}
+		Posted by: <strong><a href='/user/{{author.username}}'>{{author.username}}</a></strong>
+	{{/if}}
+{{/if}}
