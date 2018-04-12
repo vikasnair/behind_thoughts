@@ -43,6 +43,10 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
 	Strategy.find({}, (err, result) => {
+		if (err) {
+			res.render('index', { user: res.locals.user });
+		}
+		
 		res.render('index', { user: res.locals.user, strategies: result });
 	});
 });
