@@ -158,4 +158,3 @@ app.get('/user/:username', (req, res) => {
 });
 
 const server = app.listen(app.get('port'));
-module.exports.app = app;
