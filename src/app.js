@@ -42,12 +42,14 @@ app.use((req, res, next) => {
 // routes
 
 app.get('/', (req, res) => {
+	res.render('index');
+	
 	Strategy.find({}, (err, result) => {
 		if (err) {
 			res.render('index', { user: res.locals.user });
+		} else {
+			res.render('index', { user: res.locals.user, strategies: result });
 		}
-		
-		res.render('index', { user: res.locals.user, strategies: result });
 	});
 });
 
