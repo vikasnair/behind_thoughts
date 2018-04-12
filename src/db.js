@@ -51,4 +51,4 @@ const StrategySchema = new mongoose.Schema({
 StrategySchema.plugin(URLSlugs("title"));
 mongoose.model('User', UserSchema);
 mongoose.model('Strategy', StrategySchema);
-mongoose.connect('mongodb://ds143099.mlab.com:43099/heroku_g27x0hb2');
+mongoose.connect('mongodb://heroku_g27x0hb2:Details32@ds143099.mlab.com:43099/heroku_g27x0hb2'); // TODO: make this an ENV variable
