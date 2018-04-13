@@ -5,6 +5,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const flash = require("connect-flash");
 // const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -13,6 +14,10 @@ const mongoose = require('mongoose');
 require('./db');
 
 const auth = require('./auth.js');
+const passport = auth.passport;
+const validate = passport.authenticate('local', { successRedirect: '/',
+												failureRedirect: '/login',
+												failureFlash: false });
 const User = mongoose.model('User');
 const Strategy = mongoose.model('Strategy');
 const app = express();
@@ -27,28 +32,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ cookie: { maxAge: 60000 }, secret: 'secret' }));
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.urlencoded({ extended: false }));
-app.use(session({
-    secret: 'vikasrox',
-    resave: false,
-    saveUninitialized: true
-}));
-app.use((req, res, next) => {
-	res.locals.user = req.session.user;
-	next();
-});
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
 
 app.get('/', (req, res) => {
-	// res.render('index');
-	
 	Strategy.find({}, (err, result) => {
 		if (err) {
-			res.render('index', { user: res.locals.user });
+			res.render('index', { user: req.user });
 		} else {
-			res.render('index', { user: res.locals.user, strategies: result });
+			res.render('index', { user: req.user, strategies: result });
 		}
 	});
 });
@@ -62,57 +58,36 @@ app.post('/register', (req, res) => {
 		res.render('register', err);
 	};
 
-	const success = (user) => {
-		auth.startAuthenticatedSession(req, user, (err) => {
-			if (err) {
-				res.render('register', err);
-			} else {
-				res.redirect('/');
-			}
-		});
-	};
-
-	auth.register(req.body.username, req.body.email, req.body.password, error, success);
+	auth.register(req.body.username, req.body.email, req.body.password, error, validate.bind(null, req, res));
 });
 
 app.get('/login', (req, res) => {
-	res.render('login');
+	res.render('login', { message : req.flash });
 });
 
-app.post('/login', (req, res) => {
-	const error = (err) => { 
-		res.render('login', err);
-	};
+app.post('/login', validate);
 
-	const success = (user) => {
-		auth.startAuthenticatedSession(req, user, (err) => {
-			if (err) {
-				res.render('login', err);
-			} else {
-				res.redirect('/');
-			}
-		});
-	};
-
-	auth.login(req.body.username, req.body.password, error, success);
+app.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/');
 });
 
 app.get('/strategy/add', (req, res) => {
-	if (res.locals.user) {
-		res.render('strategy-add', { user: res.locals.user });
+	if (req.user) {
+		res.render('strategy-add', { user: req.user });
 	} else {
 		res.redirect('/login');
 	}
 });
 
 app.post('/strategy/add', (req, res) => {
-	if (res.locals.user) {
+	if (req.user) {
 		if (req.body.title) {
 			new Strategy({
 				title: req.body.title,
 				url: req.body.url,
 				votes: 0,
-				author: res.locals.user._id,
+				author: req.user._id,
 				createdAt: new Date()
 			}).save((err, result) => {
 				console.log(err, result);
@@ -151,7 +126,7 @@ app.get('/user/:username', (req, res) => {
 		if (!err && user) {
 			Strategy.find({ author: user._id }, (err, strategies) => {
 				if (!err && strategies) {
-					res.render('index', { user: res.locals.user, author: req.params.username, strategies: strategies });
+					res.render('index', { user: req.user, author: req.params.username, strategies: strategies });
 				} else {
 					res.redirect('/');
 				}

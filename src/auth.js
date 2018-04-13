@@ -1,15 +1,16 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 
-function register(username, email, password, errorCallback, successCallback) {
+const register = (username, email, password, errorCallback, successCallback) => {
 	if (username.length < 3 || password.length < 8) {
-		console.log('USERNAME PASSWORD TOO SHORT');
+		console.log('USERNAME OR PASSWORD TOO SHORT');
 		return errorCallback({ message: 'USERNAME PASSWORD TOO SHORT' });
 	}
 
-	User.findOne({ username: username }, (err, result) => {
-		if (result) {
+	User.findOne({ username: username }, (err, user) => {
+		if (user) {
 			console.log('USERNAME ALREADY EXISTS');
 			return errorCallback({ message: 'USERNAME ALREADY EXISTS' });
 		}
@@ -24,59 +25,55 @@ function register(username, email, password, errorCallback, successCallback) {
 				username: username,
 				email: email,
 				password: hash
-			}).save((err, result) => {
+			}).save((err, newUser) => {
 				if (err) {
 					console.log('DOCUMENT SAVE ERROR');
 					return errorCallback({ message: 'DOCUMENT SAVE ERROR' });
 				}
 
-				return successCallback(result);
+				return successCallback(newUser.username, newUser.password);
 			});
 		});
 	});
 }
 
-function login(username, password, errorCallback, successCallback) {
-	User.findOne({ username: username }, (err, result) => {
-		if (err || !result) {
-			console.log('USER NOT FOUND');
-			return errorCallback({ message: 'USER NOT FOUND'});
+const login = (username, password, cb) => {
+	User.findOne({ username: username }, (err, user) => {
+		if (err) {
+			console.log('ERROR FINDING USER');
+			return cb(err);
 		}
 
-		bcrypt.compare(password, result.password, (err, match) => {
+		if (!user) {
+			console.log('USER NOT FOUND');
+			return cb(null, false, { message: 'Incorrect username.' });
+		}
+
+		bcrypt.compare(password, user.password, (err, match) => {
 			if (err) {
 				console.log('ERROR COMPARING PASSWORD');
-				return errorCallback({ message: 'ERROR COMPARING PASSWORD' });
+				return cb(err);
 			}
 
 			if (!match) {
 				console.log('PASSWORDS DO NOT MATCH');
-				return errorCallback({ message: 'PASSWORDS DO NOT MATCH' });
+				return cb(null, false, { message: 'Incorrect password.' });
 			}
 
-			return successCallback(result);
+			return cb(null, user);
 		});
 	});
 }
 
-function startAuthenticatedSession(req, user, cb) {
-	req.session.regenerate((err) => {
-		if (err) {
-			console.log('ERROR REGENERATING SESSION');
-			return cb({ message: 'ERROR REGENERATING SESSION' });
-		}
-
-		req.session.user = {
-			username: user.username,
-			_id: user._id
-		};
-
-		return cb();
-	});
-}
+passport.use(new LocalStrategy(login));
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 module.exports = {
-  startAuthenticatedSession: startAuthenticatedSession,
   register: register,
-  login: login
+  passport: passport
 };
