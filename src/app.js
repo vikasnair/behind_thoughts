@@ -136,4 +136,4 @@ app.get('/user/:username', (req, res) => {
 	});
 });
 
-const server = app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000);

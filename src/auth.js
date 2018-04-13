@@ -35,7 +35,7 @@ const register = (username, email, password, errorCallback, successCallback) => 
 			});
 		});
 	});
-}
+};
 
 const login = (username, password, cb) => {
 	User.findOne({ username: username }, (err, user) => {
@@ -63,7 +63,7 @@ const login = (username, password, cb) => {
 			return cb(null, user);
 		});
 	});
-}
+};
 
 passport.use(new LocalStrategy(login));
 passport.serializeUser((user, done) => {
