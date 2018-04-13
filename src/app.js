@@ -5,7 +5,6 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const flash = require("connect-flash");
 // const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -62,7 +61,7 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-	res.render('login', { message : req.flash });
+	res.render('login', { message : req.session.error });
 });
 
 app.post('/login', validate);
