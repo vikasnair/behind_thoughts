@@ -90,10 +90,12 @@ Each strategy in list links to strategy-detail.
   * Must run on entire codebase outside of node_modules automatically on file change (watch for changes to the file system)
   * Must link to relevant lines in build configuration and lint configuration
   * Must show screen capture / animated gif of running on save
+* (1 point) Validate email using external library
+  * using email-existence
 
 11 points total out of 8 required points
 
-## [Link to Initial Main Project File](src/app.js) 
+## [Link to Initial Main Project File](src/app.js)
 
 ## Annotations / References Used
 

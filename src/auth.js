@@ -1,44 +1,72 @@
-const bcrypt = require('bcryptjs');
+// vikas was here!
+
+// MARK: Modules
+
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const emailExistence = require('email-existence');
+
+// MARK: Models
+
 const User = mongoose.model('User');
-const passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
+
+// MARK: Functions
 
 const register = (username, email, password, errorCallback, successCallback) => {
 	if (username.length < 3 || password.length < 8) {
 		console.log('USERNAME OR PASSWORD TOO SHORT');
-		return errorCallback({ message: 'USERNAME PASSWORD TOO SHORT' });
+		return errorCallback({ message : 'USERNAME PASSWORD TOO SHORT' });
 	}
 
 	User.findOne({ username: username }, (err, user) => {
-		if (user) {
-			console.log('USERNAME ALREADY EXISTS');
-			return errorCallback({ message: 'USERNAME ALREADY EXISTS' });
+		if (err) {
+			console.log('ERROR IN DATABASE');
+			return errorCallback({ message : err });
 		}
 
-		bcrypt.hash(password, 10, (err, hash) => {
+		if (user) {
+			console.log('USERNAME ALREADY EXISTS');
+			return errorCallback({ message : 'USERNAME ALREADY EXISTS' });
+		}
+
+		emailExistence.check(email, (err, result) => {
 			if (err) {
-				console.log('ERROR ENCRYPTING PASSWORD');
-				return errorCallback({ message: 'ERROR ENCRYPTING PASSWORD' });
+				console.log('ERROR CHECKING EMAIL');
+				return errorCallback({ message : err });
 			}
 
-			new User({
-				username: username,
-				email: email,
-				password: hash
-			}).save((err, newUser) => {
-				if (err) {
-					console.log('DOCUMENT SAVE ERROR');
-					return errorCallback({ message: 'DOCUMENT SAVE ERROR' });
-				}
+			if (result) {
+				bcrypt.hash(password, 10, (err, hash) => {
+					if (err) {
+						console.log('ERROR ENCRYPTING PASSWORD');
+						return errorCallback({ message : 'ERROR ENCRYPTING PASSWORD' });
+					}
 
-				return successCallback(newUser.username, newUser.password);
-			});
+					new User({
+						username: username,
+						email: email,
+						password: hash
+					}).save((err, newUser) => {
+						if (err) {
+							console.log('DOCUMENT SAVE ERROR');
+							return errorCallback({ message : 'DOCUMENT SAVE ERROR' });
+						}
+
+						return successCallback(newUser.username, newUser.password);
+					});
+				});
+			} else {
+				console.log('EMAIL NOT VALID');
+				return errorCallback({ message : 'EMAIL NOT VALID' });
+			}
 		});
 	});
 };
 
 const login = (username, password, cb) => {
-	User.findOne({ username: username }, (err, user) => {
+	User.findOne({ username : username }, (err, user) => {
 		if (err) {
 			console.log('ERROR FINDING USER');
 			return cb(err);
@@ -46,7 +74,7 @@ const login = (username, password, cb) => {
 
 		if (!user) {
 			console.log('USER NOT FOUND');
-			return cb(null, false, { message: 'Incorrect username.' });
+			return cb(null, false, { message : 'Incorrect username.' });
 		}
 
 		bcrypt.compare(password, user.password, (err, match) => {
@@ -57,7 +85,7 @@ const login = (username, password, cb) => {
 
 			if (!match) {
 				console.log('PASSWORDS DO NOT MATCH');
-				return cb(null, false, { message: 'Incorrect password.' });
+				return cb(null, false, { message : 'Incorrect password.' });
 			}
 
 			return cb(null, user);
