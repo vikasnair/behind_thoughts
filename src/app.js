@@ -26,10 +26,6 @@ const queryParser = (req, res, next) => {
     query.title = req.query.title;
   }
 
-	if (req.query.author) {
-    query.author = req.query.author;
-  }
-
   req.query = query;
   next();
 };
