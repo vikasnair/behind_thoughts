@@ -22,26 +22,26 @@ const register = (username, email, password, errorCallback, successCallback) => 
 
 	User.findOne({ username: username }, (err, user) => {
 		if (err) {
-			console.log('ERROR IN DATABASE');
-			return errorCallback({ message : err });
+			console.log('ERROR CHECKING USER IN DATABASE.');
+			return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
 		}
 
 		if (user) {
 			console.log('USERNAME ALREADY EXISTS');
-			return errorCallback({ message : 'USERNAME ALREADY EXISTS' });
+			return errorCallback({ message : 'USERNAME ALREADY EXISTS.' });
 		}
 
 		emailExistence.check(email, (err, result) => {
 			if (err) {
-				console.log('ERROR CHECKING EMAIL');
-				return errorCallback({ message : err });
+				console.log('ERROR CHECKING EMAIL.');
+				return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
 			}
 
 			if (result) {
 				bcrypt.hash(password, 10, (err, hash) => {
 					if (err) {
 						console.log('ERROR ENCRYPTING PASSWORD');
-						return errorCallback({ message : 'ERROR ENCRYPTING PASSWORD' });
+						return errorCallback({ message : 'ERROR ENCRYPTING PASSWORD.' });
 					}
 
 					new User({
@@ -50,16 +50,16 @@ const register = (username, email, password, errorCallback, successCallback) => 
 						password: hash
 					}).save((err, newUser) => {
 						if (err) {
-							console.log('DOCUMENT SAVE ERROR');
-							return errorCallback({ message : 'DOCUMENT SAVE ERROR' });
+							console.log('DOCUMENT SAVE ERROR.');
+							return errorCallback({ message : 'ERROR REGISTERING USER. TRY AGAIN.' });
 						}
 
 						return successCallback(newUser.username, newUser.password);
 					});
 				});
 			} else {
-				console.log('EMAIL NOT VALID');
-				return errorCallback({ message : 'EMAIL NOT VALID' });
+				console.log('EMAIL NOT VALID.');
+				return errorCallback({ message : 'EMAIL NOT VALID.' });
 			}
 		});
 	});
