@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const emailExistence = require('email-existence');
+const emailVerify = require('email-verify');
 
 // MARK: Models
 
@@ -19,7 +19,7 @@ const register = (username, email, password, errorCallback, successCallback) => 
 		console.log('USERNAME TOO SHORT.');
 		return errorCallback({ message : 'USERNAME NEEDS AT LEAST 3 CHARACTERS.' });
 	}
-	
+
 	if (password.length < 8) {
 		console.log('PASSWORD TOO SHORT.');
 		return errorCallback({ message : 'PASSWORD NEEDS AT LEAST 8 CHARACTERS.' });
@@ -36,13 +36,15 @@ const register = (username, email, password, errorCallback, successCallback) => 
 			return errorCallback({ message : 'USERNAME ALREADY EXISTS.' });
 		}
 
-		emailExistence.check(email, (err, result) => {
+		emailVerify.verify(email, (err, result) => {
 			if (err) {
 				console.log('ERROR CHECKING EMAIL.', err);
 				return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
 			}
 
-			if (result) {
+			console.log(result.success);
+
+			if (result.success) {
 				bcrypt.hash(password, 10, (err, hash) => {
 					if (err) {
 						console.log('ERROR ENCRYPTING PASSWORD.', err);
