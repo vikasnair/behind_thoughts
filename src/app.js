@@ -23,7 +23,7 @@ const queryParser = (req, res, next) => {
   const query = {};
 
   if (req.query.title) {
-    query.title = /req.query.title/i;
+    query.title = { "$regex": req.query.title, "$options": "i" };
   }
 
   req.query = query;
