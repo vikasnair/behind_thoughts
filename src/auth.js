@@ -37,8 +37,6 @@ const register = (username, email, password, errorCallback, successCallback) => 
 		}
 
 		emailVerify.verify(email, (err, result) => {
-			console.log(result.success);
-
 			if (err || !result.success) {
 				console.log('ERROR CHECKING EMAIL.', err);
 				return errorCallback({ message : 'EMAIL INVALID.' });
