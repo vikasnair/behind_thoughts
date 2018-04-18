@@ -19,9 +19,25 @@ app.use(logger('dev'));
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const queryParser = (req, res, next) => {
+  const query = {};
+
+  if (req.query.title) {
+    query.title = req.query.title;
+  }
+
+	if (req.query.author) {
+    query.author = req.query.author;
+  }
+
+  req.query = query;
+  next();
+};
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(queryParser);
 
 // MARK: Path
 
@@ -58,7 +74,7 @@ app.use(passport.session());
 // MARK: Routes -- GET
 
 app.get('/', (req, res) => {
-	Strategy.find({}, (err, result) => {
+	Strategy.find(req.query, (err, result) => {
 		if (err) {
 			res.render('index', { user: req.user });
 		} else {
