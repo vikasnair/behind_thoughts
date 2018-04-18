@@ -37,37 +37,32 @@ const register = (username, email, password, errorCallback, successCallback) => 
 		}
 
 		emailVerify.verify(email, (err, result) => {
-			if (err) {
-				console.log('ERROR CHECKING EMAIL.', err);
-				return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
-			}
-
 			console.log(result.success);
 
-			if (result.success) {
-				bcrypt.hash(password, 10, (err, hash) => {
+			if (err || !result.success) {
+				console.log('ERROR CHECKING EMAIL.', err);
+				return errorCallback({ message : 'EMAIL INVALID.' });
+			}
+
+			bcrypt.hash(password, 10, (err, hash) => {
+				if (err) {
+					console.log('ERROR ENCRYPTING PASSWORD.', err);
+					return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
+				}
+
+				new User({
+					username: username,
+					email: email,
+					password: hash
+				}).save((err, newUser) => {
 					if (err) {
-						console.log('ERROR ENCRYPTING PASSWORD.', err);
-						return errorCallback({ message : 'ERROR ENCRYPTING PASSWORD.' });
+						console.log('DOCUMENT SAVE ERROR.', err);
+						return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
 					}
 
-					new User({
-						username: username,
-						email: email,
-						password: hash
-					}).save((err, newUser) => {
-						if (err) {
-							console.log('DOCUMENT SAVE ERROR.', err);
-							return errorCallback({ message : 'ERROR REGISTERING USER. TRY AGAIN.' });
-						}
-
-						return successCallback(newUser.username, newUser.password);
-					});
+					return successCallback(newUser.username, newUser.password);
 				});
-			} else {
-				console.log('EMAIL NOT VALID.');
-				return errorCallback({ message : 'EMAIL NOT VALID.' });
-			}
+			});
 		});
 	});
 };
