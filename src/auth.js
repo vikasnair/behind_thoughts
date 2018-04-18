@@ -15,9 +15,14 @@ const User = mongoose.model('User');
 // MARK: Functions
 
 const register = (username, email, password, errorCallback, successCallback) => {
-	if (username.length < 3 || password.length < 8) {
-		console.log('USERNAME OR PASSWORD TOO SHORT');
-		return errorCallback({ message : 'USERNAME PASSWORD TOO SHORT' });
+	if (username.length < 3) {
+		console.log('USERNAME TOO SHORT.');
+		return errorCallback({ message : 'USERNAME NEEDS AT LEAST 3 CHARACTERS.' });
+	}
+	
+	if (password.length < 8) {
+		console.log('PASSWORD TOO SHORT.');
+		return errorCallback({ message : 'PASSWORD NEEDS AT LEAST 8 CHARACTERS.' });
 	}
 
 	User.findOne({ username: username }, (err, user) => {
@@ -27,20 +32,20 @@ const register = (username, email, password, errorCallback, successCallback) => 
 		}
 
 		if (user) {
-			console.log('USERNAME ALREADY EXISTS');
+			console.log('USERNAME ALREADY EXISTS.');
 			return errorCallback({ message : 'USERNAME ALREADY EXISTS.' });
 		}
 
 		emailExistence.check(email, (err, result) => {
 			if (err) {
-				console.log('ERROR CHECKING EMAIL.');
+				console.log('ERROR CHECKING EMAIL.', err);
 				return errorCallback({ message : 'UNKNOWN ERROR. TRY AGAIN.' });
 			}
 
 			if (result) {
 				bcrypt.hash(password, 10, (err, hash) => {
 					if (err) {
-						console.log('ERROR ENCRYPTING PASSWORD');
+						console.log('ERROR ENCRYPTING PASSWORD.', err);
 						return errorCallback({ message : 'ERROR ENCRYPTING PASSWORD.' });
 					}
 
@@ -50,7 +55,7 @@ const register = (username, email, password, errorCallback, successCallback) => 
 						password: hash
 					}).save((err, newUser) => {
 						if (err) {
-							console.log('DOCUMENT SAVE ERROR.');
+							console.log('DOCUMENT SAVE ERROR.', err);
 							return errorCallback({ message : 'ERROR REGISTERING USER. TRY AGAIN.' });
 						}
 
@@ -68,24 +73,24 @@ const register = (username, email, password, errorCallback, successCallback) => 
 const login = (username, password, cb) => {
 	User.findOne({ username : username }, (err, user) => {
 		if (err) {
-			console.log('ERROR FINDING USER');
+			console.log('ERROR FINDING USER.', err);
 			return cb(err);
 		}
 
 		if (!user) {
-			console.log('USER NOT FOUND');
-			return cb(null, false, { message : 'Incorrect username.' });
+			console.log('USER NOT FOUND.');
+			return cb(null, false, { message : 'INCORRECT USERNAME.' });
 		}
 
 		bcrypt.compare(password, user.password, (err, match) => {
 			if (err) {
-				console.log('ERROR COMPARING PASSWORD');
+				console.log('ERROR COMPARING PASSWORD.', err);
 				return cb(err);
 			}
 
 			if (!match) {
-				console.log('PASSWORDS DO NOT MATCH');
-				return cb(null, false, { message : 'Incorrect password.' });
+				console.log('PASSWORDS DO NOT MATCH.');
+				return cb(null, false, { message : 'INCORRECT PASSWORD.' });
 			}
 
 			return cb(null, user);
