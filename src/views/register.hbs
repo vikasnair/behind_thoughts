@@ -1,19 +1,18 @@
-<h2>Register</h2>
 {{#if message}}
-<div class="error">{{ message }}</div>
+	<div class="error">{{ message }}</div>
 {{/if}}
-<form method="POST" action="register">
-	<div>
-		<label for="username">Username:</label>
-		<input type="text" name="username" value="">
-	</div>
-	<div>
-		<label for="email">Email:</label> 
-		<input type="email" name="email" value="">
-	</div>
-	<div>
-		<label for="password">Password:</label>
-		<input type="password" name="password" value="">
-	</div>
-	<div><input type="submit" value="Register"></div>
-</form>
+
+<div class="auth">
+	<form method="POST" action="register">
+		<div>
+			<input type="text" name="username" value="" placeholder="jan_alleman">
+		</div>
+		<div>
+			<input type="email" name="email" value="" placeholder="jan@alleman.com">
+		</div>
+		<div>
+			<input type="password" name="password" value="" placeholder="********">
+		</div>
+		<div><h1><input type="submit" value="Register"></h1></div>
+	</form>
+</div>

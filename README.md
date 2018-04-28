@@ -78,22 +78,16 @@ Each strategy in list links to strategy-detail.
 
 * (5 points) Integrate user authentication
   * I'm going to be using passport for user authentication
-  * And account has been made for testing; I'll email you the password
-  * see <code>cs.nyu.edu/~jversoza/ait-final/register</code> for register page
-  * see <code>cs.nyu.edu/~jversoza/ait-final/login</code> for login page
-* (4 points) Perform client side form validation using a JavaScript library
-  * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-  * if you put in a number that's greater than 5, an error message will appear in the dom
-* (2 points) Integrate ESLint / JSHint / JSLint into your workflow
-  * Must be used with build tool (see above requirement on Grunt or Gulp
-  * Must have have configuration file in repository
-  * Must run on entire codebase outside of node_modules automatically on file change (watch for changes to the file system)
-  * Must link to relevant lines in build configuration and lint configuration
-  * Must show screen capture / animated gif of running on save
+* (5 points) Automated functional testing
+  * using Selenium
+  * tested four routes in typical ux flow
+  * screencap: https://cl.ly/rDni
+* (1 point) Work with timestamps using external library
+  * using moment.js
 * (1 point) Validate email using external library
   * using email-existence
 
-11 points total out of 8 required points
+7 points total out of 8 required points
 
 ## [Link to Initial Main Project File](src/app.js)
 
