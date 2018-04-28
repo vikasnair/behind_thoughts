@@ -25,6 +25,11 @@ const register = (username, email, password, errorCallback, successCallback) => 
 		return errorCallback({ message : 'PASSWORD NEEDS AT LEAST 8 CHARACTERS.' });
 	}
 
+	if (!email) {
+		console.log('ERROR CHECKING EMAIL.');
+		return errorCallback({ message : 'EMAIL INVALID.' });
+	}
+
 	User.findOne({ username: username }, (err, user) => {
 		if (err) {
 			console.log('ERROR CHECKING USER IN DATABASE.');

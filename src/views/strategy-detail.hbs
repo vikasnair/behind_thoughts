@@ -1,11 +1,17 @@
+<style type="text/css" scoped>
+	body { background-color: black; }
+	h1, h2, h3, h4, h5, h6, p, ul, ol, li, a, form, body { color: white; }
+</style>
+
 {{#if strategy}}
-	<h2>{{strategy.title}}</h2>
+	<h1>{{strategy.title}}</h1>
 	{{#if strategy.url}}
 		URL: {{strategy.url}}
 		<br>
 	{{/if}}
-
-	{{#if author}}
-		Posted by: <strong><a href='/user/{{author.username}}'>{{author.username}}</a></strong>
-	{{/if}}
+	Posted by
+	<a href="/user/{{strategy.authorUsername}}">
+		<strong>{{strategy.authorUsername}} </strong>
+	</a>
+	on <strong>{{strategy.createdAt}}</strong>
 {{/if}}

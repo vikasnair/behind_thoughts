@@ -67,6 +67,10 @@ app.use(passport.session());
 // const favicon = require('serve-favicon');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+// MARK: Helper libraries
+
+const moment = require('moment');
+
 // MARK: Routes -- GET
 
 app.get('/', (req, res) => {
@@ -103,23 +107,17 @@ app.get('/strategy/add', (req, res) => {
 app.get('/strategy/:slug', (req, res) => {
 	Strategy.findOne({ slug: req.params.slug }, (err, strategy) => {
 		if (!err && strategy) {
-			User.findOne({ _id: strategy.author }, (err, user) => {
-				if (!err && user) {
-					res.render('strategy-detail', { strategy: strategy, author: user});
-				} else {
-					res.redirect('/');
-				}
-			});
-		} else {
-			res.redirect('/');
-		}
+      res.render('strategy-detail', { strategy: strategy });
+    } else {
+      res.redirect('/');
+    }
 	});
 });
 
 app.get('/user/:username', (req, res) => {
 	User.findOne({ username: req.params.username }, (err, user) => {
 		if (!err && user) {
-			Strategy.find({ author: user._id }, (err, strategies) => {
+			Strategy.find({ authorID: user._id }, (err, strategies) => {
 				if (!err && strategies) {
 					res.render('index', { user: req.user, author: req.params.username, strategies: strategies });
 				} else {
@@ -131,6 +129,35 @@ app.get('/user/:username', (req, res) => {
 		}
 	});
 });
+
+app.get('/vote/:id', (req, res) => {
+  if (!req.user) {
+    return res.status(401).end();
+  }
+
+  Strategy.findOne({ _id: req.params.id }, (err, strategy) => {
+    console.log(req.user._id, strategy.voters);
+
+    if (!err && strategy && !strategy.voters.includes(req.user._id)) {
+      strategy.votes += 1;
+      strategy.voters.push(req.user._id);
+      strategy.save();
+      return res.status(200).json( { strategyID: strategy._id });
+    } else {
+      return res.status(400).send(err);
+    }
+  });
+});
+
+// app.get('/api/strategy/:id', (req, res) => {
+//   Strategy.findOne({ _id: req.params.id }, (err, strategy) => {
+//     if (!err && strategy) {
+//       res.JSON(strategy);
+//     } else {
+//       res.send(err);
+//     }
+//   });
+// });
 
 // MARK: Routes -- Post
 
@@ -151,8 +178,9 @@ app.post('/strategy/add', (req, res) => {
 				title: req.body.title,
 				url: req.body.url,
 				votes: 0,
-				author: req.user._id,
-				createdAt: new Date()
+				authorID: req.user._id,
+        authorUsername: req.user.username,
+				createdAt: moment(new Date()).format('ddd, MMM D YYYY')
 			}).save((err, result) => {
 				console.log(err, result);
 				if (result && !err) {

@@ -1,21 +1,27 @@
 {{#if author}}
-	<h2>{{author}}</h2>
+	<h1>{{author}}</h1>
 {{else}}
-	<h2>All Strategies</h2>
+	<h1>All Strategies</h1>
 {{/if}}
 
-<ol>
+<ol id="strategies">
 	{{#each strategies}}
-		<li><a href="strategy/{{this.slug}}">{{this.title}}</a></li>
+		<li>
+			<div class="vote">
+				<h4 class="voteCount">{{this.votes}}</h4>
+				<button class="upvote" id="{{this._id}}">+</button>
+			</div>
+			<div class="textDetail">
+				<a href="/strategy/{{this.slug}}"><h2>{{this.title}}</h2></a>
+				<br>
+				<a href="/user/{{this.authorUsername}}">
+					by <strong>{{this.authorUsername}} </strong>
+				</a>
+
+				on <strong>{{this.createdAt}}</strong>
+			</div>
+		</li>
 	{{/each}}
 </ol>
 
-<h2>Search</h2>
-
-<form method="GET" action="">
-	<div>
-		<label for="title">Title:</label>
-		<input type="text" name="title" value="">
-	</div>
-	<input type="submit" value="Search">
-</form>
+<script

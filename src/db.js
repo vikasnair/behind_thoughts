@@ -37,13 +37,23 @@ const StrategySchema = new mongoose.Schema({
 		type: Number
 	},
 
-	author: {
+	voters: {
+		type: [String],
+		required: false
+	},
+
+	authorID: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 
+	authorUsername: {
+		type: String,
+		reuired: true
+	},
+
 	createdAt: {
-		type: Date,
+		type: String,
 		required: true
 	}
 });
@@ -53,9 +63,7 @@ mongoose.model('User', UserSchema);
 mongoose.model('Strategy', StrategySchema);
 mongoose.connect('mongodb://admin:root@ds143099.mlab.com:43099/heroku_g27x0hb2'); // TODO: make this an ENV variable
 
-mongoose.connection.on('error', console.error.bind(console, 'connection error:'));  
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connection.once('open', () => {
  console.log('we good');
 });
-
- 

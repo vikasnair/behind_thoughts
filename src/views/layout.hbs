@@ -3,25 +3,40 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Beyond Thoughts</title>
+	<title>Behind Thoughts</title>
 	<link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="/javascripts/scripts.js"></script>
 </head>
 
 <body>
-	<ul>
-		<li><a href="/">Home</a></li>
-		{{#if user}}
-			<li><a href="/user/{{user.username}}"><strong>{{user.username}}</strong></a></li>
-			<li><a href="/strategy/add">Add a strategy!</a></li>
-			<li><a href="/logout">Logout</a></li>
-		{{else}}
-			<li><a href="/login">Login</a></li>
-			<li><a href="/register">Register</a></li>
-		{{/if}}
-	</ul>
+	<div id="nav">
+		<ul id="home">
+			<li><a href="/"><strong>Behind Thoughts</strong></a></li>
+
+			<div id="options">
+				{{#if user}}
+					<li><a href="/user/{{user.username}}"><strong>{{user.username}}</strong></a></li>
+					<li><a href="/strategy/add"><u>add a strategy!</u></a></li>
+					<li><a href="/logout">logout</a></li>
+				{{else}}
+					<li><a href="/login">login</a></li>
+					<li><a href="/register">register</a></li>
+				{{/if}}
+			</div>
+		</ul>
+	</div>
 
 	<div id="container">
 		{{{body}}}
+	</div>
+
+	<div id="footer">
+		<form method="GET" action="/">
+			<div>
+				<input type="text" name="title" value="" placeholder="Search for a strategy...">
+				<input type="submit" value="Search">
+			</div>
+		</form>
 	</div>
 </body>
 
