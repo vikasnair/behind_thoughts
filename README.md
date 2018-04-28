@@ -87,7 +87,7 @@ Each strategy in list links to strategy-detail.
 * (1 point) Validate email using external library
   * using email-existence
 
-7 points total out of 8 required points
+12 points total out of 8 required points
 
 ## [Link to Initial Main Project File](src/app.js)
 

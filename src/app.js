@@ -153,7 +153,7 @@ app.get('/strategy/add', (req, res) => {
 app.get('/strategy/:slug', (req, res) => {
 	Strategy.findOne({ slug: req.params.slug }, (err, strategy) => {
 		if (!err && strategy) {
-      res.render('strategy-detail', { strategy: strategy });
+      res.render('strategy-detail', { user: req.user, strategy: strategy });
     } else {
       res.redirect('/');
     }
