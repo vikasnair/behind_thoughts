@@ -78,18 +78,16 @@ Each strategy in list links to strategy-detail.
 
 ## Research Topics
 
-* (5 points) Integrate user authentication
+* Integrate user authentication
   * I'm going to be using passport for user authentication
-* (5 points) Automated functional testing
+* Automated functional testing
   * using Selenium
   * tested four routes in typical ux flow
   * screencap: https://cl.ly/rDni
-* (1 point) Work with timestamps using external library
+* Work with timestamps using external library
   * using moment.js
-* (1 point) Validate email using external library
+* Validate email using external library
   * using email-existence
-
-12 points total out of 8 required points
 
 ## [Link to Initial Main Project File](src/app.js)
 
