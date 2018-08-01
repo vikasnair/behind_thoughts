@@ -1,5 +1,7 @@
 # Behind Thoughts
 
+### Update: Live at https://secure-everglades-72957.herokuapp.com
+
 ## Overview
 
 For the writer in a long block. For the musician out of melodies. For anyone--creative or otherwise--stuck in a rut. **Behind Thoughts** is an online, crowd-sourced set of strategies to help get through mental blocks. Dedicated to the 'Oblique Strategies' card-deck by Brian Eno and Peter Schmidt.
