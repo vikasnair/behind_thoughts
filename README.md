@@ -79,7 +79,7 @@ Each strategy in list links to strategy-detail.
 ## Research Topics
 
 * Integrate user authentication
-  * I'm going to be using passport for user authentication
+  * using Passport
 * Automated functional testing
   * using Selenium
   * tested four routes in typical ux flow
