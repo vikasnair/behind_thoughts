@@ -1,6 +1,6 @@
 # Behind Thoughts
 
-### Update: Live at https://secure-everglades-72957.herokuapp.com
+### Update: Live at http://behindthoughts.com
 
 ## Overview
 
