@@ -62,55 +62,50 @@ const validateAuth = passport.authenticate('local', { successRedirect: '/',
 app.use(passport.initialize());
 app.use(passport.session());
 
-// MARK: UI
-
-// const favicon = require('serve-favicon');
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
 // MARK: Unit Testing
 
-// const selenium = require('selenium-webdriver');
-// const chrome = require('selenium-webdriver/chrome');
-// const chromePath = require('chromedriver').path;
-//
-// const chromeService = new chrome.ServiceBuilder(chromePath).build();
-// chrome.setDefaultService(chromeService);
-//
-// const seleniumDriver = new selenium.Builder()
-//     .withCapabilities(selenium.Capabilities.chrome())
-//     .build();
-//
-// const logoutTest = () => {
-//   seleniumDriver.get(`http://localhost:3000/logout`).then(() => {
-//     console.log('All tests successful');
-//   });
-// };
-//
-// const viewStrategyAndLogoutTest = (strategyTitle) => {
-//   seleniumDriver.get(`http://localhost:3000/strategy/${strategyTitle}`).then(() => {
-//     logoutTest();
-//   });
-// };
-//
-// const addStrategyTest = (strategyTitle) => {
-//   seleniumDriver.get('http://localhost:3000/strategy/add').then(() => {
-//     seleniumDriver.findElement(selenium.By.id('addStrategyTitle')).sendKeys(strategyTitle);
-//     seleniumDriver.findElement(selenium.By.id('addStrategySubmit')).submit().then(() => {
-//       viewStrategyAndLogoutTest();
-//     });
-//   });
-// };
-//
-// const loginAndAddStrategyTest = (username, password) => {
-//   seleniumDriver.get('http://localhost:3000/login').then(() => {
-//     seleniumDriver.findElement(selenium.By.id('loginUsername')).sendKeys(username);
-//     seleniumDriver.findElement(selenium.By.id('loginPassword')).sendKeys(password);
-//     seleniumDriver.findElement(selenium.By.id('loginSubmit')).submit().then(() => {
-//       addStrategyTest('Test');
-//     });
-//   });
-// };
-//
+const selenium = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const chromePath = require('chromedriver').path;
+
+const chromeService = new chrome.ServiceBuilder(chromePath).build();
+chrome.setDefaultService(chromeService);
+
+const seleniumDriver = new selenium.Builder()
+    .withCapabilities(selenium.Capabilities.chrome())
+    .build();
+
+const logoutTest = () => {
+  seleniumDriver.get(`http://localhost:3000/logout`).then(() => {
+    console.log('All tests successful');
+  });
+};
+
+const viewStrategyAndLogoutTest = (strategyTitle) => {
+  seleniumDriver.get(`http://localhost:3000/strategy/${strategyTitle}`).then(() => {
+    logoutTest();
+  });
+};
+
+const addStrategyTest = (strategyTitle) => {
+  seleniumDriver.get('http://localhost:3000/strategy/add').then(() => {
+    seleniumDriver.findElement(selenium.By.id('addStrategyTitle')).sendKeys(strategyTitle);
+    seleniumDriver.findElement(selenium.By.id('addStrategySubmit')).submit().then(() => {
+      viewStrategyAndLogoutTest();
+    });
+  });
+};
+
+const loginAndAddStrategyTest = (username, password) => {
+  seleniumDriver.get('http://localhost:3000/login').then(() => {
+    seleniumDriver.findElement(selenium.By.id('loginUsername')).sendKeys(username);
+    seleniumDriver.findElement(selenium.By.id('loginPassword')).sendKeys(password);
+    seleniumDriver.findElement(selenium.By.id('loginSubmit')).submit().then(() => {
+      addStrategyTest('Test');
+    });
+  });
+};
+
 // loginAndAddStrategyTest('vikas', '00000000');
 
 // MARK: Helper libraries
